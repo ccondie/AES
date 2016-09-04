@@ -1,21 +1,29 @@
 import sbox
 
 
-# block as hex number
-def sub_bytes_2(block):
-    pass
+def pretty_print_state(state):
+    for x in range(0, len(state)):
+        for y in range(0, len(state[x])):
+            print(str(hex(state[x][y]))[2:], end=' ')
+        print()
 
 
-def sub_bytes(block):
+def sub_bytes(state):
+    for x in range(0, len(state)):
+        for y in range(0, len(state[x])):
+            state[x][y] = sub_bytes_cell(state[x][y])
+
+
+# block: Number, decimal representation of the 8-bit block of the 128-bit state
+def sub_bytes_cell(block):
     # s_box[x][y]
     block_hex = str(hex(block))
 
     # remove the '0x' from the hex block string
     block_hex = block_hex[2:]
-    block_hex_len = len(block_hex)
 
-    # if the first element of the block is a 0
-    if block_hex_len == 1:
+    # if the first element of the block is a 0 then block_hex will reduce to only one element
+    if len(block_hex) == 1:
         x_el = 0
         y_el = block_hex[0]
     else:
@@ -27,8 +35,18 @@ def sub_bytes(block):
 
 
 def main():
-    sub_test_hex = 0x08
-    print(hex(sub_bytes(sub_test_hex)))
+    state = [
+        [0x19, 0xa0, 0x9a, 0xe9],
+        [0x3d, 0xf4, 0xc6, 0xf8],
+        [0xe3, 0xe2, 0x8d, 0x48],
+        [0xbe, 0x2b, 0x2a, 0x08]
+    ]
+
+    pretty_print_state(state)
+    sub_bytes(state)
+
+    print()
+    pretty_print_state(state)
 
 
 main()
