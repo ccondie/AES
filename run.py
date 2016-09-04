@@ -1,6 +1,13 @@
 import sbox
 
 
+def build_state(plaintext_32hex):
+    plaintext_str = str(plaintext_32hex)
+    plaintext_8bit_split = [plaintext_str[i:i+2] for i in range(0, len(plaintext_str), 2)]
+    print(plaintext_8bit_split)
+
+
+
 def pretty_print_state(state):
     for x in range(0, len(state)):
         for y in range(0, len(state[x])):
@@ -53,11 +60,8 @@ def main():
         [0xbe, 0x2b, 0x2a, 0x08]
     ]
 
-    pretty_print_state(state)
-    shift_rows(state)
-
-    print()
-    pretty_print_state(state)
+    plaintxt = '02468ace13579bdf02468ace13579bdf'
+    build_state(plaintxt)
 
 
 main()
@@ -91,7 +95,7 @@ rotate first n bytes from front of row to back of row
 ---MixColumns : DIFFICULTY HARD
 Something with Matrix Multiplication ...
 
----AddRoundKeye : DIFFICULTY ??? (How to get roundKey?)
+---AddRoundKey : DIFFICULTY ??? (How to get roundKey?)
 XOR each element of each column 0-3 with each element of each column 0-3 of the RoundKey
 
 
