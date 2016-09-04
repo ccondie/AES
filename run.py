@@ -14,9 +14,20 @@ def sub_bytes(state):
             state[x][y] = sub_bytes_cell(state[x][y])
 
 
-# block: Number, decimal representation of the 8-bit block of the 128-bit state
+def shift_rows(state):
+    for x in range(0, len(state)):
+        for y in range(0, x):
+            shift_row(state[x])
+        print()
+
+
+def shift_row(row):
+    to_shift = row[0]
+    del row[0]
+    row.append(to_shift)
+
+
 def sub_bytes_cell(block):
-    # s_box[x][y]
     block_hex = str(hex(block))
 
     # remove the '0x' from the hex block string
@@ -43,7 +54,7 @@ def main():
     ]
 
     pretty_print_state(state)
-    sub_bytes(state)
+    shift_rows(state)
 
     print()
     pretty_print_state(state)
@@ -80,7 +91,7 @@ rotate first n bytes from front of row to back of row
 ---MixColumns : DIFFICULTY HARD
 Something with Matrix Multiplication ...
 
----AddRoundKeye : DIFFICULTY
+---AddRoundKeye : DIFFICULTY ??? (How to get roundKey?)
 XOR each element of each column 0-3 with each element of each column 0-3 of the RoundKey
 
 
