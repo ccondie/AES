@@ -1,23 +1,5 @@
 import sbox
-
-
-def build_state(plaintext_32hex):
-    plaintext_str = str(plaintext_32hex)
-    plaintext_8bit_split = [plaintext_str[i:i + 2] for i in range(0, len(plaintext_str), 2)]
-    return plaintext_8bit_split
-
-
-def pretty_print_state(state):
-    for x in range(0, len(state)):
-        for y in range(0, len(state[x])):
-            print(str(hex(state[x][y]))[2:], end=' ')
-        print()
-
-
-def sub_bytes(state):
-    for x in range(0, len(state)):
-        for y in range(0, len(state[x])):
-            state[x][y] = sub_bytes_cell(state[x][y])
+from state import State
 
 
 def shift_rows(state):
@@ -31,6 +13,12 @@ def shift_row(row):
     to_shift = row[0]
     del row[0]
     row.append(to_shift)
+
+
+def sub_bytes(state):
+    for x in range(0, len(state)):
+        for y in range(0, len(state[x])):
+            state[x][y] = sub_bytes_cell(state[x][y])
 
 
 def sub_bytes_cell(block):
@@ -52,31 +40,75 @@ def sub_bytes_cell(block):
 
 
 def mix_columns(state):
-    pass
+    return_me = []
+
+    return return_me
 
 
 def mix_column(column):
-    pass
+    new_column = []
+
+    zero = ff_multi(0x02, column[0])
+    one = ff_multi(0x03, column[1])
+    el_one = zero ^ one ^ column[2] ^ column[3]
+    new_column.append(el_one)
+
+    el_two = column[0] ^ ff_multi(0x02, column[1]) ^ ff_multi(0x03, column[2]) ^ column[3]
+    new_column.append(el_two)
+
+    el_three = column[0] ^ column[1] ^ ff_multi(0x02, column[2]) ^ ff_multi(0x03, column[3])
+    new_column.append(el_three)
+
+    el_four = ff_multi(0x03, column[0]) ^ column[1] ^ column[2] ^ ff_multi(0x02, column[3])
+    new_column.append(el_four)
+
+    return new_column
 
 
 def ff_multi(byte_one, byte_two):
-    pass
+
+    x_time_values = []
+    final_xor_values = []
+
+    # calculate and store the 8 xTime values for byte_one
+    x_time_values.append(byte_one)
+    for x in range(1, 8):
+        x_time_values.append(x_time(x_time_values[x - 1]))
+
+    byte_two_str = str(bin(byte_two))[2:]
+    for x in range(0, len(byte_two_str)):
+        bit = byte_two_str[len(byte_two_str) - 1 - x]
+        if bit == '1':
+            final_xor_values.append(x_time_values[x])
+
+    result = 0b00000000
+    for el in final_xor_values:
+        result = result ^ el
+
+    return result
 
 
 def x_time(byte):
-    byte <<= 1                      # left shift the incoming byte
-    byte_set = byte & 0b100000000   # check if the overflow bit is set
-    if byte_set == 0b100000000:     # after the AND, the byte_set will be 0b100000000 if the overflow bit was set
-        return byte ^ 0b100010111
-    else:                           # or 0b000000000 if the overflow bit was not set
+    byte <<= 1  # left shift the incoming byte
+    byte_set = byte & 0b100000000  # check if the overflow bit is set
+    if byte_set == 0b100000000:  # after the AND, the byte_set will be 0b100000000 if the overflow bit was set
+        return byte ^ 0b100011011
+    else:  # or 0b000000000 if the overflow bit was not set
         return byte
 
 
 def main():
-    plaintxt = '02468ace13579bdf02468ace13579bdf'
-    build_state(plaintxt)
+    # plaintxt = '02468ace13579bdf02468ace13579bdf'
+    plaintxt = 'd4bf5d30e0b452aeb84111f11e2798e5'
+    state = State(plaintxt)
 
-    x_time(0b01111111)
+    state.pretty_print()
+    print(state.get_column(0))
+
+
+    # column = [0xd4, 0xbf, 0x5d, 0x30]
+    # mix_column(column)
+
 
 
 main()
