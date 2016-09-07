@@ -3,9 +3,8 @@ import sbox
 
 def build_state(plaintext_32hex):
     plaintext_str = str(plaintext_32hex)
-    plaintext_8bit_split = [plaintext_str[i:i+2] for i in range(0, len(plaintext_str), 2)]
-    print(plaintext_8bit_split)
-
+    plaintext_8bit_split = [plaintext_str[i:i + 2] for i in range(0, len(plaintext_str), 2)]
+    return plaintext_8bit_split
 
 
 def pretty_print_state(state):
@@ -52,16 +51,32 @@ def sub_bytes_cell(block):
     return new_block
 
 
-def main():
-    state = [
-        [0x19, 0xa0, 0x9a, 0xe9],
-        [0x3d, 0xf4, 0xc6, 0xf8],
-        [0xe3, 0xe2, 0x8d, 0x48],
-        [0xbe, 0x2b, 0x2a, 0x08]
-    ]
+def mix_columns(state):
+    pass
 
+
+def mix_column(column):
+    pass
+
+
+def ff_multi(byte_one, byte_two):
+    pass
+
+
+def x_time(byte):
+    byte <<= 1                      # left shift the incoming byte
+    byte_set = byte & 0b100000000   # check if the overflow bit is set
+    if byte_set == 0b100000000:     # after the AND, the byte_set will be 0b100000000 if the overflow bit was set
+        return byte ^ 0b100010111
+    else:                           # or 0b000000000 if the overflow bit was not set
+        return byte
+
+
+def main():
     plaintxt = '02468ace13579bdf02468ace13579bdf'
     build_state(plaintxt)
+
+    x_time(0b01111111)
 
 
 main()
