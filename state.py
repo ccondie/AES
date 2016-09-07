@@ -4,7 +4,7 @@ def build_state(plaintext_32hex):
 
     for i in range(0, len(plaintext_str), 2):
         add_this = '0x' + plaintext_str[i:i + 2]
-        final_state.append(add_this)
+        final_state.append(int(add_this,16))
 
     return final_state
 
@@ -28,8 +28,12 @@ class State(object):
             return_me.append(self.get(x, index))
         return return_me
 
+    def set_column(self, index, new_column):
+        for x in range(0, 4):
+            self.set(x, index, new_column[x])
+
     def pretty_print(self):
         for x in range(0, 4):
             for y in range(0, 4):
-                print(self.get(x, y), end=' ')
+                print(hex(self.get(x, y)), end=' ')
             print()

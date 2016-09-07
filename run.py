@@ -40,17 +40,14 @@ def sub_bytes_cell(block):
 
 
 def mix_columns(state):
-    return_me = []
-
-    return return_me
+    for y in range(0, 4):
+        state.set_column(y, mix_column(state.get_column(y)))
 
 
 def mix_column(column):
     new_column = []
 
-    zero = ff_multi(0x02, column[0])
-    one = ff_multi(0x03, column[1])
-    el_one = zero ^ one ^ column[2] ^ column[3]
+    el_one = ff_multi(0x02, column[0]) ^ ff_multi(0x03, column[1]) ^ column[2] ^ column[3]
     new_column.append(el_one)
 
     el_two = column[0] ^ ff_multi(0x02, column[1]) ^ ff_multi(0x03, column[2]) ^ column[3]
@@ -66,7 +63,6 @@ def mix_column(column):
 
 
 def ff_multi(byte_one, byte_two):
-
     x_time_values = []
     final_xor_values = []
 
@@ -103,12 +99,10 @@ def main():
     state = State(plaintxt)
 
     state.pretty_print()
-    print(state.get_column(0))
+    print()
 
-
-    # column = [0xd4, 0xbf, 0x5d, 0x30]
-    # mix_column(column)
-
+    mix_columns(state)
+    state.pretty_print()
 
 
 main()
