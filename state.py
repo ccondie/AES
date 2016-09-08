@@ -20,7 +20,14 @@ class State(object):
         self.state[y * 4 + x] = val
 
     def get_row(self, index):
-        pass
+        return_me = []
+        for y in range(0, 4):
+            return_me.append(self.get(index, y))
+        return return_me
+
+    def set_row(self, index, new_row):
+        for y in range(0, 4):
+            self.set(index, y, new_row[y])
 
     def get_column(self, index):
         return_me = []
@@ -37,3 +44,6 @@ class State(object):
             for y in range(0, 4):
                 print(hex(self.get(x, y)), end=' ')
             print()
+
+    def length(self):
+        return len(self.state)
