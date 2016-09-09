@@ -2,6 +2,7 @@ import rcon
 import copy
 from state import *
 from sub_byte import *
+from common import *
 
 
 def pre_process_key(key):
@@ -17,31 +18,6 @@ def pre_process_key(key):
         final_state.append(int(add_this, 16))
 
     return final_state
-
-
-def word_to_num(word):
-    temp_array = ['0x']
-    for el in word:
-        temp_array.append(format(el,'02x'))
-    send_this = ''.join(temp_array)
-    return int(send_this, 16)
-
-
-def num_to_word(num):
-    as_hex = format(num, '08x')
-    return_me = []
-    for i in range(0, len(as_hex), 2):
-        add_this = '0x' + as_hex[i:i + 2]
-        return_me.append(int(add_this, 16))
-
-    return return_me
-
-
-def print_word_hex(word):
-    print('[', end='')
-    for el in word:
-        print(hex(el), end=' ')
-    print(']')
 
 
 def build_schedule(key):
@@ -114,22 +90,17 @@ def rot_word(word):
 class KeyHandler(object):
     def __init__(self, key):
         self.key = key
-        self.key_schedule = build_schedule(key)
+        self.key_schedule = build_schedule(pre_process_key(key))
 
+    def next_round(self):
+        return_me = []
+        for i in range(0,4):
+            return_me.append(self.key_schedule[0])
+            del self.key_schedule[0]
+        return return_me
 
-def main():
-    key128bit = '2b7e151628aed2a6abf7158809cf4f3c'
-    key192bit = '8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b'
-    key256bit = '603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4'
-
-    index = 0
-    for el in build_schedule(pre_process_key(key192bit)):
-        for in_el in el:
-            print(format(in_el, '02x'), end=' ')
+    def print_next_round(self):
+        for i in range(0,4):
+            for j in range(0, 4):
+                print(format(self.key_schedule[i][j],'02x'),end='')
         print()
-        index += 1
-        if (index % 4 == 0):
-            print()
-
-
-main()

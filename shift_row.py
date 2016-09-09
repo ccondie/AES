@@ -13,15 +13,3 @@ def shift_row(row):
     del row[0]
     row.append(to_shift)
     return row
-
-
-def main():
-    state = State('d42711aee0bf98f1b8b45de51e415230')
-    state.pretty_print()
-    print()
-
-    shift_rows(state)
-    state.pretty_print()
-
-
-main()
