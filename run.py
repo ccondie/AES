@@ -9,7 +9,7 @@ from add_round_key import *
 
 def main():
     plain_text = '00112233445566778899aabbccddeeff'
-    key_text = '000102030405060708090a0b0c0d0e0f1011121314151617'
+    key_text = '000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
 
     state = State(plain_text)
     key = KeyHandler(key_text)
