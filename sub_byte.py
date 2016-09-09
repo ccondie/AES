@@ -33,6 +33,3 @@ def main():
 
     sub_bytes(state)
     state.pretty_print()
-
-
-main()
