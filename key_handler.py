@@ -20,7 +20,7 @@ def pre_process_key(key):
     return final_state
 
 
-def build_schedule(key):
+def build_schedule(key, nk, nr):
     """
     Nb: Number of columns (32-bit words) comprising the State, Nb = 4
     Nr: Number of rounds, Nr = 10, 12, 14
@@ -32,10 +32,6 @@ def build_schedule(key):
             [d4,eb,2c,d1,a3 ...]
         ]
     """
-    nr_lookup = {4: 10, 6: 12, 8: 14}
-
-    nk = int(len(key) / 4)
-    nr = nr_lookup[nk]
     nb = 4
 
     w = []
@@ -89,8 +85,13 @@ def rot_word(word):
 
 class KeyHandler(object):
     def __init__(self, key):
+        key = pre_process_key(key)
+        nr_lookup = {4: 10, 6: 12, 8: 14}
+        self.nk = int(len(key) / 4)
+        self.nr = nr_lookup[self.nk]
+
         self.key = key
-        self.key_schedule = build_schedule(pre_process_key(key))
+        self.key_schedule = build_schedule(key, self.nk, self.nr)
 
     def next_round(self):
         return_me = []
