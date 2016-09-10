@@ -1,9 +1,8 @@
 def build_state(plaintext_32hex):
-    plaintext_str = str(plaintext_32hex)
     final_state = []
 
-    for i in range(0, len(plaintext_str), 2):
-        add_this = plaintext_str[i:i + 2]
+    for i in range(0, len(plaintext_32hex), 2):
+        add_this = plaintext_32hex[i:i + 2]
         final_state.append(int(add_this,16))
 
     return final_state
@@ -50,6 +49,13 @@ class State(object):
         for el in self.state:
             print(format(el,'02x'),end='')
         print()
+
+    def tostring_raw(self):
+        builder = []
+        for el in self.state:
+            builder.append(format(el,'02x'))
+        return_me = ''.join(builder)
+        return return_me
 
     def length(self):
         return len(self.state)

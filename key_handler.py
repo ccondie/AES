@@ -95,13 +95,27 @@ class KeyHandler(object):
 
     def next_round(self):
         return_me = []
-        for i in range(0,4):
+        for i in range(0, 4):
             return_me.append(self.key_schedule[0])
             del self.key_schedule[0]
         return return_me
 
-    def print_next_round(self):
-        for i in range(0,4):
+    def inv_next_round(self):
+        return_me = []
+        for i in range(len(self.key_schedule) - 4, len(self.key_schedule)):
+            return_me.append(self.key_schedule[i])
+        for j in range(0, 4):
+            del self.key_schedule[len(self.key_schedule) - 4]
+        return return_me
+
+    def print_inv_next_round(self):
+        for i in range(len(self.key_schedule) - 4, len(self.key_schedule)):
             for j in range(0, 4):
-                print(format(self.key_schedule[i][j],'02x'),end='')
+                print(format(self.key_schedule[i][j], '02x'), end='')
+        print()
+
+    def print_next_round(self):
+        for i in range(0, 4):
+            for j in range(0, 4):
+                print(format(self.key_schedule[i][j], '02x'), end='')
         print()
