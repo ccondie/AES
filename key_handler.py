@@ -102,10 +102,10 @@ class KeyHandler(object):
 
     def inv_next_round(self):
         return_me = []
-        for i in range(len(self.key_schedule) - 4, len(self.key_schedule)):
-            return_me.append(self.key_schedule[i])
-        for j in range(0, 4):
-            del self.key_schedule[len(self.key_schedule) - 4]
+        start_point = len(self.key_schedule) - 4
+        for i in range(0, 4):
+            return_me.append(self.key_schedule[start_point])
+            del self.key_schedule[start_point]
         return return_me
 
     def print_inv_next_round(self):

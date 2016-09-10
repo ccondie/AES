@@ -1,5 +1,6 @@
 from sbox import *
 from mix_column import *
+from inv_mix_column import *
 from sub_byte import *
 from inv_sub_byte import *
 from shift_row import *
@@ -77,26 +78,25 @@ def decrypt(cipher_text, key_text):
 
     r = 1
     for x in range(1, key.nr):
-        print('round[' + '{:>2}'.format(r) + '].start\t\t', end='')
+        print('round[' + '{:>2}'.format(r) + '].istart\t', end='')
         state.raw_print()
 
         inv_shift_rows(state)
-        print('round[' + '{:>2}'.format(r) + '].s_row\t\t', end='')
+        print('round[' + '{:>2}'.format(r) + '].is_row\t', end='')
         state.raw_print()
 
         inv_sub_bytes(state)
-        print('round[' + '{:>2}'.format(r) + '].s_byt\t\t', end='')
+        print('round[' + '{:>2}'.format(r) + '].is_byt\t', end='')
         state.raw_print()
 
+        print('round[' + '{:>2}'.format(r) + '].ik_sch\t', end='')
+        key.print_inv_next_round()
 
-        #
-        # mix_columns(state)
-        # print('round[' + '{:>2}'.format(r) + '].m_col\t\t', end='')
-        # state.raw_print()
-        #
-        # print('round[' + '{:>2}'.format(r) + '].k_sch\t\t', end='')
-        # key.print_next_round()
-        # add_round_key(state, key.next_round())
+        add_round_key(state, key.inv_next_round())
+        print('round[' + '{:>2}'.format(r) + '].ik_add\t', end='')
+        state.raw_print()
+
+        inv_mix_columns(state)
 
         r += 1
 
