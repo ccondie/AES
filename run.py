@@ -100,6 +100,26 @@ def decrypt(cipher_text, key_text):
 
         r += 1
 
+    print('round[' + '{:>2}'.format(r) + '].istart\t', end='')
+    state.raw_print()
+
+    inv_shift_rows(state)
+    print('round[' + '{:>2}'.format(r) + '].is_row\t', end='')
+    state.raw_print()
+
+    inv_sub_bytes(state)
+    print('round[' + '{:>2}'.format(r) + '].is_byt\t', end='')
+    state.raw_print()
+
+    print('round[' + '{:>2}'.format(r) + '].ik_sch\t', end='')
+    key.print_inv_next_round()
+    add_round_key(state, key.inv_next_round())
+
+    print('round[' + '{:>2}'.format(r) + '].output\t', end='')
+    state.raw_print()
+
+    return state.tostring_raw()
+
 
 def main():
     plain_text = '00112233445566778899aabbccddeeff'
