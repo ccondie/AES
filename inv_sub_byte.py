@@ -1,14 +1,14 @@
-import sbox
+import invsbox
 from state import *
 
 
-def sub_bytes(state):
+def inv_sub_bytes(state):
     for x in range(0, 4):
         for y in range(0, 4):
-            state.set(x, y, sub_bytes_cell(state.get(x, y)))
+            state.set(x, y, inv_sub_bytes_cell(state.get(x, y)))
 
 
-def sub_bytes_cell(block):
+def inv_sub_bytes_cell(block):
     block_hex = str(hex(block))
 
     # remove the '0x' from the hex block string
@@ -22,5 +22,5 @@ def sub_bytes_cell(block):
         x_el = block_hex[0]
         y_el = block_hex[1]
 
-    new_block = sbox.get(int(str(x_el), 16), int(str(y_el), 16))
+    new_block = invsbox.get(int(str(x_el), 16), int(str(y_el), 16))
     return new_block

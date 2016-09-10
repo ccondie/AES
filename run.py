@@ -1,6 +1,7 @@
 from sbox import *
 from mix_column import *
 from sub_byte import *
+from inv_sub_byte import *
 from shift_row import *
 from inv_shift_row import *
 from state import *
@@ -83,10 +84,10 @@ def decrypt(cipher_text, key_text):
         print('round[' + '{:>2}'.format(r) + '].s_row\t\t', end='')
         state.raw_print()
 
-        # sub_bytes(state)
-        # print('round[' + '{:>2}'.format(r) + '].s_byt\t\t', end='')
-        # state.raw_print()
-        #
+        inv_sub_bytes(state)
+        print('round[' + '{:>2}'.format(r) + '].s_byt\t\t', end='')
+        state.raw_print()
+
 
         #
         # mix_columns(state)
